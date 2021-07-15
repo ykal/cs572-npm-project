@@ -1,4 +1,4 @@
-### MEAN Games Google Anaylytics using `ngx-google-analytics`
+### Integrate Google Anaylytics to MEAN Games using `ngx-google-analytics`
 
 #### Main tasks completed
 
