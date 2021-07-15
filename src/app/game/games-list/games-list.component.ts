@@ -4,6 +4,8 @@ import { GamesApiService } from '../services/games-api.service';
 import {Game} from '../../model/game';
 import { AuthService } from 'src/app/shared/auth/services/auth.service';
 import { GameQueryParam } from 'src/app/model/game-query-param';
+import { GoogleAnalyticsService } from 'ngx-google-analytics';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-games-list',
@@ -19,7 +21,11 @@ export class GamesListComponent implements OnInit {
   gameForm!: FormGroup;
   game: Game = this.defaultGame;
 
-  constructor(private gameApiService: GamesApiService, public authService: AuthService) {
+  constructor(
+    private gameApiService: GamesApiService, 
+    public authService: AuthService, 
+    private googleAnalyticsSerives: GoogleAnalyticsService) 
+    {
     this.gameForm = new FormGroup({
       title: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
@@ -33,6 +39,8 @@ export class GamesListComponent implements OnInit {
   ngOnInit(): void {
     this.fetchGames();
   }
+
+  
 
   private fetchGames(params?: GameQueryParam) {
     this.gameApiService.getAll(params)
@@ -77,5 +85,6 @@ export class GamesListComponent implements OnInit {
 
   onSearch(event: any) {
     this.fetchGames({title: this.keyword});
+    this.googleAnalyticsSerives.event("search", "Games", this.keyword)
   }
 }
